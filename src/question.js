@@ -13,9 +13,9 @@ class Question {
     shuffleChoices() {
         
 
-        for(let choicesIndex = 0; choicesIndex < this.choices.length / 2; choicesIndex++) {
-            const randomIndex = (Math.floor(Math.random() * this.choices.length / 2));
-            let temp = this.choices[choicesIndex];
+        for (let choicesIndex = this.choices.length - 1; choicesIndex > 0; choicesIndex -= 1) {
+            const randomIndex = Math.floor(Math.random() * (choicesIndex + 1));
+            const temp = this.choices[choicesIndex];
             this.choices[choicesIndex] = this.choices[randomIndex];
             this.choices[randomIndex] = temp;
         }

@@ -22,10 +22,10 @@ class Quiz {
 
     // 4. shuffleQuestions()
     shuffleQuestions() {
-        for(let choicesIndex = 0; choicesIndex < this.questions.length / 2; choicesIndex++) {
-            const randomIndex = (Math.floor(Math.random() * this.questions.length / 2));
-            let temp = this.questions[choicesIndex];
-            this.questions[choicesIndex] = this.questions[randomIndex];
+        for (let questionsIndex = this.questions.length - 1; questionsIndex > 0; questionsIndex -= 1) {
+            const randomIndex = Math.floor(Math.random() * (questionsIndex + 1));
+            const temp = this.questions[questionsIndex];
+            this.questions[questionsIndex] = this.questions[randomIndex];
             this.questions[randomIndex] = temp;
         }
     }
