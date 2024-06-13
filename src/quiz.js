@@ -24,9 +24,7 @@ class Quiz {
     shuffleQuestions() {
         for (let questionsIndex = this.questions.length - 1; questionsIndex > 0; questionsIndex -= 1) {
             const randomIndex = Math.floor(Math.random() * (questionsIndex + 1));
-            const temp = this.questions[questionsIndex];
-            this.questions[questionsIndex] = this.questions[randomIndex];
-            this.questions[randomIndex] = temp;
+            [this.questions[questionsIndex], this.questions[randomIndex]] = [this.questions[randomIndex], this.questions[questionsIndex]]
         }
     }
 

@@ -59,7 +59,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /************  TIMER  ************/
 
+  // timer Id
   let timer;
+
+  // wrap timer in function to re use 
+  function startTimer() {
+
+    timer = setInterval(() => {
+
+      // calculate minutes and seconds format
+      let min = Math.floor(quiz.timeRemaining / 60).toString().padStart(2, "0");
+      let sec = (quiz.timeRemaining % 60).toString().padStart(2, "0");
+
+      // update timer display, decrement time remaining
+      timeRemainingContainer.innerText = `${min}:${sec}`;
+      quiz.timeRemaining -= 1;
+
+      if (quiz.timeRemaining === 0) {
+        showResults();
+      }
+  
+    }, 1000);
+  }
+  
+  // start timer
+  startTimer();
 
 
   /************  EVENT LISTENERS  ************/
@@ -128,17 +152,30 @@ document.addEventListener("DOMContentLoaded", () => {
       // Hint 3: You can use the `element.appendChild()` method to append an element to the choices container.
       // Hint 4: You can use the `element.innerText` property to set the inner text of an element.
 
+      // loop over each choice for current question 
       quiz.questions[quiz.currentQuestionIndex].choices.forEach(choice => {
+
+        // create new choice option to append elements to
+        const newLi = document.createElement("li");
+
+        // create input element, set attributes
         const newInput = document.createElement("input");
         newInput.type = "radio";
         newInput.name = "choice";
         newInput.value = choice;
+
+        // create label with choice text, add line break
         const newLabel = document.createElement("label");
         newLabel.innerText = choice;
         const newBreak = document.createElement("br");
-        choiceContainer.appendChild(newInput);
-        choiceContainer.appendChild(newLabel);
-        choiceContainer.appendChild(newBreak);
+
+        // wrap all choice elements together into single element
+        newLi.appendChild(newInput);
+        newLi.appendChild(newLabel);
+        newLi.appendChild(newBreak);
+
+        // add to list of choices
+        choiceContainer.appendChild(newLi);
       })
 
   }
@@ -184,6 +221,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // YOUR CODE HERE:
     //
+    // stop timer when quiz ends
+    clearInterval(timer);
     // 1. Hide the quiz view (div#quizView)
     quizView.style.display = "none";
 
@@ -196,11 +235,20 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // restart button
   document.getElementById("restartButton").addEventListener("click", () => {
+    // when restart button is clicked, display appropriate view
     endView.style.display = "none";
     quizView.style.display = "flex";
+
+    // reset question index and correct answers
     quiz.currentQuestionIndex = 0;
     quiz.correctAnswers = 0; 
+
+    // reset time remaining on quiz, display correct time 
+    quiz.timeRemaining = quizDuration;
+    timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+
     quiz.shuffleQuestions();
     showQuestion();
+    startTimer();
   })
 });
